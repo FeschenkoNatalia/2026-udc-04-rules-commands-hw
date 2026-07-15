@@ -43,7 +43,8 @@ Full step-by-step instructions: [`docs/walkthrough.md`](docs/walkthrough.md).
 
 You create: `.cursor/rules/*.mdc` (≥6), `.cursor/commands/*.md` (≥2), a
 generalized `app/AGENTS.md`, `docs/ab-validation.md`, and (bonus)
-`docs/cross-tool-check.md`.
+`docs/cross-tool-check.md` + a `.claude/commands/` mirror of your commands
+(same format — they work in Claude Code as slash commands unchanged).
 
 ## Tools
 

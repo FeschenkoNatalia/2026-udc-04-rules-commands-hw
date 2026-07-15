@@ -33,6 +33,8 @@ Baseline guidance for an Agentic IDE working in **this homework repo**.
 - Keep deliverables at the agreed paths so auto-review can find them:
   - `.cursor/rules/*.mdc` — Task A rule-set (≥6)
   - `.cursor/commands/*.md` — Task C commands (≥2)
+  - `.claude/commands/*.md` — optional cross-tool mirror of the same commands
+    (same Markdown + `$ARGUMENTS` format; bonus, pairs well with Task E)
   - `app/AGENTS.md` — generalized in place (Task B)
   - `docs/ab-validation.md` — Task D A/B write-up
   - `docs/cross-tool-check.md` — Task E (bonus)

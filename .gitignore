@@ -32,5 +32,7 @@ yarn-error.log*
 # Windows Git Bash safety: prevent accidental NUL device files
 nul
 
-# Local agent worktrees (git worktree metadata, not project content)
-.claude/
+# Local agent state (settings, worktrees) — but DO commit .claude/commands/,
+# it's the cross-tool command mirror from Task C.
+.claude/*
+!.claude/commands/

@@ -121,6 +121,11 @@ architecture і guardrails.
 Кожна команда: `description` у frontmatter, `$ARGUMENTS` для вводу, посилання на
 `.cursor/rules/`. Протестуйте хоча б одну на реальній задачі.
 
+> **Крос-tool бонус:** Cursor і Claude Code використовують **той самий формат**
+> команд (Markdown + `description` + `$ARGUMENTS`). Скопіюйте ваші команди у
+> `.claude/commands/` — і вони запрацюють як slash-команди у Claude Code без
+> жодної зміни. Це чудово доповнює Task E.
+
 **Перевірка:** у `.cursor/commands/` ≥2 `.md`-файли з `description` і
 `$ARGUMENTS`; принаймні одну команду ви реально запускали.
 

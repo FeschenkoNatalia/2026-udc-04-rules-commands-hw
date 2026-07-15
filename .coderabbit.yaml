@@ -40,6 +40,7 @@ reviews:
   # ── File filters ──────────────────────────────────────────────
   path_filters:
     - ".cursor/**"
+    - ".claude/**"
     - "docs/**"
     - "app/AGENTS.md"
     - "AGENTS.md"
@@ -72,6 +73,13 @@ reviews:
         Task C — команди. Перевір: ≥2 файли, кожен має `description` у
         frontmatter і використовує `$ARGUMENTS`, адаптований під цей проєкт
         (кастомний store / actions / reducer), і посилається на .cursor/rules/.
+
+    - path: ".claude/commands/**"
+      instructions: |
+        Крос-tool бонус до Task C — дзеркало команд для Claude Code (той самий
+        формат Markdown + $ARGUMENTS). Перевір, що вміст збігається з
+        відповідними файлами в .cursor/commands/ (не розійшовся). Необов'язкове;
+        відсутність не помилка.
 
     - path: "app/AGENTS.md"
       instructions: |
