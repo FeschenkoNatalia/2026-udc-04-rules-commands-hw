@@ -1,0 +1,156 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+#
+# CodeRabbit config — auto-review of UDC Workshop 4 homework PRs.
+# Workshop: "Налаштування правил та команд для Agentic IDE" (rules & commands).
+# Place this file in the ROOT of the practice repo.
+
+language: "uk-UA"
+tone_instructions: >
+  Ментор воркшопу UDC. Відповідай українською, доброзичливо але вимогливо.
+  Що пропущено — поясни що і чому. Статуси: ✅ зроблено, ⚠️ частково, ❌ пропущено.
+
+early_access: false
+
+reviews:
+  profile: "assertive"
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "@coderabbitai summary"
+  poem: false
+  review_status: true
+  collapse_walkthrough: false
+  changed_files_summary: true
+  sequence_diagrams: false
+
+  auto_review:
+    enabled: true
+    drafts: true
+    auto_incremental_review: true
+    auto_pause_after_reviewed_commits: 0
+    base_branches:
+      - ".*"
+    ignore_title_keywords:
+      - "WIP"
+      - "[skip review]"
+    ignore_usernames:
+      - "dependabot[bot]"
+      - "renovate[bot]"
+      - "github-actions[bot]"
+
+  # ── File filters ──────────────────────────────────────────────
+  path_filters:
+    - ".cursor/**"
+    - "docs/**"
+    - "app/AGENTS.md"
+    - "AGENTS.md"
+    - "CLAUDE.md"
+    - "app/src/**"
+    - "!**/node_modules/**"
+    - "!**/dist/**"
+    - "!**/build/**"
+    - "!**/coverage/**"
+    - "!*.lock"
+    - "!**/package-lock.json"
+    - "!**/yarn.lock"
+    - "!**/*.min.js"
+    - "!**/*.min.css"
+
+  # ── Path-specific review instructions ─────────────────────────
+  path_instructions:
+    - path: ".cursor/rules/**"
+      instructions: |
+        Task A — базовий rule-set. Перевір: ≥6 правил (.mdc), кожне конкретне і
+        прив'язане до реального коду (app/src/store.ts, types.ts, reducer.ts,
+        lib/text.ts), КОЖНЕ має секцію "How to verify". Очікуваний мінімум:
+        architecture (кастомний store, НЕ Redux/Zustand), conventions,
+        do-not-touch (store.ts + types.ts, alwaysApply: true), testing (vitest),
+        custom-lib (реальний API lib/text.ts), +1 власне. Розмиті правила
+        («пишіть хороший код», без How-to-verify) — ⚠️/❌.
+
+    - path: ".cursor/commands/**"
+      instructions: |
+        Task C — команди. Перевір: ≥2 файли, кожен має `description` у
+        frontmatter і використовує `$ARGUMENTS`, адаптований під цей проєкт
+        (кастомний store / actions / reducer), і посилається на .cursor/rules/.
+
+    - path: "app/AGENTS.md"
+      instructions: |
+        Task B — ціль узагальнення. Перевір: файл більше НЕ «# Cursor Rules»
+        заглушка — містить Структуру, Команди (npm test / typecheck; lint не
+        налаштований — має бути зазначено, а не вигаданий), 3-5 конвенцій,
+        Architecture (кастомний store, НЕ Redux/Zustand), Guardrails
+        (store.ts/types.ts не чіпати, без нових залежностей).
+
+    - path: "docs/ab-validation.md"
+      instructions: |
+        Task D — A/B-валідація. Перевір: той самий промпт (materials/ab-task.md)
+        у режимах ON і OFF, є результат A і результат B, таблиця відмінностей із
+        КОНКРЕТИКОЮ (шлях зміни стану, чи додано state-бібліотеку, export style,
+        типи) і висновок. Порожні плейсхолдери <…> — ⚠️/❌.
+
+    - path: "docs/cross-tool-check.md"
+      instructions: |
+        Task E (bonus) — крос-tool перевірка. Перевір: 2 інструменти, той самий
+        промпт, чи підхопились rules/AGENTS.md, розбіжності, висновок.
+        Необов'язкове; відсутність не помилка.
+
+    - path: "app/src/**"
+      instructions: |
+        Якщо код застосунку змінено (напр. додано `priority` з Task D) — перевір,
+        що зміна йде «золотим шляхом»: розширено Action union у types.ts,
+        оброблено в reducer.ts ІММУТАБЕЛЬНО, додано action-creator, НЕ додано
+        Redux/Zustand, не зламано публічні сигнатури, named exports, без `any`,
+        і `npm test` лишається зеленим.
+
+  # ── Pre-merge checks (grading) ────────────────────────────────
+  pre_merge_checks:
+    title:
+      mode: "warning"
+      requirements: >
+        PR title should follow: "WS4: <participant-name>".
+
+    description:
+      mode: "warning"
+
+    custom_checks:
+      - mode: "warning"
+        name: "Task A — rule-set (>=6 rules, each verifiable)"
+        instructions: >
+          Check .cursor/rules/ has >=6 .mdc rules, each concrete and tied to the
+          real app, each with a "How to verify" section, covering at least
+          architecture (custom store not Redux/Zustand), conventions,
+          do-not-touch (store.ts/types.ts), testing, and custom-lib (lib/text.ts
+          API). PASS if concrete and complete; FAIL if <6, vague, or missing
+          verification sections.
+
+      - mode: "warning"
+        name: "Task B — cross-tool AGENTS.md"
+        instructions: >
+          Check app/AGENTS.md was generalized beyond the seeded "# Cursor Rules"
+          stub — has structure, commands, conventions, architecture, and
+          guardrails, not tied to a single tool. PASS if generalized; FAIL if
+          unchanged or still single-tool.
+
+      - mode: "warning"
+        name: "Task C — commands (>=2)"
+        instructions: >
+          Check .cursor/commands/ has >=2 command files, each with a description
+          and $ARGUMENTS, adapted to this project and referencing .cursor/rules/.
+          PASS if present and project-specific; FAIL if <2 or generic.
+
+      - mode: "warning"
+        name: "Task D — A/B validation"
+        instructions: >
+          Check docs/ab-validation.md documents the SAME prompt run with rules ON
+          and OFF, with a concrete difference table and a conclusion (not
+          placeholders), AND cd app && npm test passes. PASS if a real difference
+          is shown; FAIL if placeholders or missing.
+
+      - mode: "warning"
+        name: "Task E — cross-tool check (bonus)"
+        instructions: >
+          Optional. If docs/cross-tool-check.md exists, check it covers 2 tools
+          with the same prompt and a conclusion. Absence is NOT a failure.
+
+chat:
+  auto_reply: true

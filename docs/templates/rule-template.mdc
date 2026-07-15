@@ -1,0 +1,23 @@
+---
+description: "Short description — when this rule applies"
+globs: "app/**/*.ts"
+alwaysApply: false
+---
+
+# Rule Name
+
+## Context
+
+Why this rule exists. What problem it solves in THIS project (reference real
+files, e.g. app/src/store.ts, app/src/types.ts, app/src/lib/text.ts).
+
+## Rule
+
+- Concrete instruction 1
+- Concrete instruction 2
+- NEVER / DO NOT / AVOID instructions where a negative constraint is clearer
+
+## How to verify
+
+1. Verification step 1 (e.g. "grep for direct state mutation — should find zero")
+2. Verification step 2 (e.g. "no `redux`/`zustand` imports exist")

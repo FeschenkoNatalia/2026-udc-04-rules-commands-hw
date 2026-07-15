@@ -1,0 +1,16 @@
+{
+  "name": "udc-ws04-app",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Tiny TS sample with a custom state store — the base you write rules and commands for in the WS4 exercise.",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
