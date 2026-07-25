@@ -1,0 +1,44 @@
+---
+description: "Named exports, no any/@ts-ignore, immutable updates, import style, kebab-case files"
+globs: "app/**/*.ts"
+alwaysApply: false
+---
+
+# Code conventions
+
+## Context
+
+`app/src` is TypeScript-strict (`noUncheckedIndexedAccess` is on) with a
+consistent set of conventions across every file — see
+`materials/architecture-brief.md`, "Conventions".
+
+## Rule
+
+- **Named exports only** — no `export default` anywhere in `app/src`.
+- No `any` and no `@ts-ignore`/`@ts-expect-error`. If a type is genuinely
+  unknown, model it properly (union, generic, `unknown` + narrowing).
+- All state updates are **immutable**: build new objects/arrays with spread,
+  `map`, `filter`, etc. Never mutate an existing array/object in place.
+- Relative imports between `app/src` files keep the `.js` extension (matches
+  every existing import, e.g. `"./types.js"`, `"./lib/text.js"`), even though
+  the file on disk is `.ts`.
+- Type-only imports use `import type { ... }` (or an inline `type` modifier,
+  as in `import { initialState, type AppState } from "./types.js"`) —
+  don't import a type as if it were a value.
+- `noUncheckedIndexedAccess` is on: indexing an array (`tasks[0]`) or looking
+  up an optional record key yields `T | undefined`. Guard/narrow before use
+  (as `reducer.test.ts` does with `toggled.tasks[0]?.done`) instead of
+  asserting it away with `!`.
+- File names are **kebab-case** (e.g. `text-utils.ts`, not `textUtils.ts`);
+  type/interface names are PascalCase (matches existing `Task`, `AppState`).
+
+## How to verify
+
+1. `grep -rn "export default" app/src` returns no matches.
+2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts` returns
+   no matches in non-test, non-comment code.
+3. `grep -rn "from \"\./[^\"]*[^s]\"" app/src --include=*.ts` (relative import
+   NOT ending in `.js`) returns no matches.
+4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
+   leaks, unguarded indexed access, and bad import resolution).
+5. New filenames under `app/src` match `^[a-z0-9-]+\.ts$`.

@@ -1,0 +1,46 @@
+---
+description: "Custom store is the only way state changes; extend via Action union + reducer, never a state library"
+globs: "app/**"
+alwaysApply: false
+---
+
+# Architecture — custom store, not Redux/Zustand
+
+## Context
+
+`app/src/store.ts` (`createStore` -> `{ getState, dispatch, subscribe }`) is
+the only state engine in this app — a hand-rolled store, not Redux/Zustand.
+See `materials/architecture-brief.md`.
+
+## Rule
+
+- State changes ONLY through `store.dispatch(action)`. Never mutate the object
+  returned by `store.getState()`, and never assign to its fields.
+- To add new behavior: add a variant to the `Action` union in
+  `app/src/types.ts` (allowed — see `do-not-touch.mdc` for the exact boundary)
+  → handle it in `app/src/reducer.ts` (pure, returns a new object) → add a
+  matching creator in `app/src/actions.ts` (see `action-creators.mdc`).
+- Build actions with the creators from `app/src/actions.ts`, never by hand-
+  writing `{ type: "...", payload: {...} }` at the call site.
+- Do NOT import or add `redux`, `zustand`, `mobx`, `jotai`, or any other state
+  library (see `dependencies.mdc`). Do NOT reimplement `dispatch`/`subscribe`/
+  `getState` in a new file — `app/src/store.ts` is the only instance.
+- `subscribe` returns an unsubscribe function; call it when a listener should
+  stop receiving updates instead of leaving it registered forever (see the
+  "stops notifying after unsubscribe" case in `app/src/store.test.ts`).
+- UI/consumer code reads state via `app/src/selectors.ts`, not by reaching
+  into `state.tasks`/`state.filter` directly.
+
+## How to verify
+
+1. `grep -rniE "redux|zustand|mobx|jotai" app/src app/package.json` returns no
+   matches.
+2. Every new action variant appears in all three of `types.ts` (`Action`
+   union), `reducer.ts` (a `case` arm), and `actions.ts` (a creator function)
+   — same count of variants as creators.
+3. `grep -rnE "getState\(\)\.[a-zA-Z]+\s*=|getState\(\)\.[a-zA-Z]+\.(push|splice|pop|shift|unshift|sort|reverse)\(" app/src`
+   returns no matches — that pattern is direct mutation of live state instead
+   of going through `dispatch`. (Reading `getState().tasks` is fine; assigning
+   to it or calling a mutating array method on it is not.)
+4. `cd app && npm test` passes, including the existing immutability
+   assertion in `reducer.test.ts` ("does not mutate the previous state").
