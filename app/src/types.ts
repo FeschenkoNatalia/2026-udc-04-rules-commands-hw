@@ -32,7 +32,7 @@ export type Action =
   | { type: "task/toggled"; payload: { id: TaskId } }
   | { type: "task/removed"; payload: { id: TaskId } }
   | { type: "task/cleared" }
-  | { type: "task/priorityChanged"; payload: { id: TaskId; priority: Priority } }
+  | { type: "task/prioritized"; payload: { id: TaskId; priority: Priority } }
   | { type: "filter/set"; payload: { filter: Filter } };
 
 export const initialState: AppState = {

@@ -13,7 +13,7 @@ Add a new `Action` variant for: $ARGUMENTS
    string of `"<domain>/<verb in past tense>"`.
 4. Add a colocated test (happy path + one edge case) matching the style in
    `app/src/reducer.test.ts`.
-5. Run `cd app && npm test` and `npm run typecheck` — both must pass.
+5. Run `cd app && npm test && npm run typecheck` — both must pass.
 
 Follow `.cursor/rules/` — especially `architecture.mdc`, `action-creators.mdc`,
 `do-not-touch.mdc` (never edit `app/src/store.ts`), `conventions.mdc`, and

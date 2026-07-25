@@ -1,7 +1,7 @@
 # A/B validation (Task D)
 
 **Rule(s) under test:** `AGENTS.md` / `CLAUDE.md` / `app/AGENTS.md` +
-`.claude/skills/add-action`.
+`.claude/commands/add-action.md`.
 **Prompt (same for A and B):** verbatim from `materials/ab-task.md`.
 **Tool used:** Claude Code.
 

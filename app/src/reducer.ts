@@ -40,7 +40,7 @@ export function reducer(state: AppState, action: Action): AppState {
     case "task/cleared":
       return { ...state, tasks: [] };
 
-    case "task/priorityChanged":
+    case "task/prioritized":
       return {
         ...state,
         tasks: state.tasks.map((task) =>

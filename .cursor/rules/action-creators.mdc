@@ -9,8 +9,8 @@ alwaysApply: false
 ## Context
 
 `app/src/actions.ts` holds one creator per `Action` variant (`addTask`,
-`toggleTask`, `removeTask`, `setFilter`) — the sanctioned way to build
-`Action` objects.
+`toggleTask`, `removeTask`, `clearTasks`, `setTaskPriority`, `setFilter`) —
+the sanctioned way to build `Action` objects.
 
 ## Rule
 

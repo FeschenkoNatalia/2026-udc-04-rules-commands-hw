@@ -23,7 +23,7 @@ export function clearTasks(): Action {
 }
 
 export function setTaskPriority(id: TaskId, priority: Priority): Action {
-  return { type: "task/priorityChanged", payload: { id, priority } };
+  return { type: "task/prioritized", payload: { id, priority } };
 }
 
 export function setFilter(filter: Filter): Action {

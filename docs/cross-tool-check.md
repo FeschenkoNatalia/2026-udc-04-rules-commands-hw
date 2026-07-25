@@ -7,7 +7,7 @@
 
 | Tool           | Picked up rules/AGENTS.md without extra setup? | Notes                                                                                                                                                       |
 |----------------|------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Claude Code    | no — needs `CLAUDE.md`                         | Pointer file to `AGENTS.md`. Once present: full adherence, matches the real Task D diff.                                                                    |
+| Claude Code    | no — needs `app/CLAUDE.md`                     | Pointer file to `AGENTS.md`. Once present: full adherence, matches the real Task D diff.                                                                    |
 | GitHub Copilot | no — needs `.github/copilot-instructions.md`   | Copilot can read `AGENTS.md` directly, but some surfaces still key off this file as native entrypoint. Even then, adherence is mostly, not fully, reliable. |
 
 ## Differences observed

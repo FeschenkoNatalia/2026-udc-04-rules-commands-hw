@@ -31,7 +31,7 @@ top of them.
 1. `git diff --name-only` (or the PR's changed-files list) does not include
    `app/src/store.ts` unless the task explicitly asked for it.
 2. If `app/src/types.ts` changed, `git diff app/src/types.ts` shows only
-   additions (new union members / new optional-safe fields), not a renamed or
+   additions (new union members / new fields), not a renamed or
    removed existing export.
 3. No new file duplicates `dispatch`/`subscribe`/`getState`-shaped logic
    (`grep -rn "function createStore\|getState()\s*{" app/src` should only

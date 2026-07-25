@@ -7,7 +7,7 @@ Diagnose this error and propose a fix:
 $ARGUMENTS
 
 1. Find the root cause, not just the symptom — trace it to the actual
-   file/line using `cd app && npm run typecheck` / `npm test` output.
+   file/line using `cd app && npm run typecheck` / `cd app && npm test` output.
 2. Propose a fix for the root cause. Do NOT use `@ts-ignore`/
    `@ts-expect-error`/`any` to silence it (`.cursor/rules/conventions.mdc`).
 3. Do not edit `app/src/store.ts`; `app/src/types.ts` may only be extended,
@@ -16,7 +16,7 @@ $ARGUMENTS
    (`.cursor/rules/dependencies.mdc`).
 5. Fix only what's needed to resolve this error — no unrelated cleanup in
    the same pass.
-6. Apply the fix, then confirm `cd app && npm test` and `npm run typecheck`
+6. Apply the fix, then confirm `cd app && npm test && npm run typecheck`
    both pass.
 
 Follow `.cursor/rules/` throughout.

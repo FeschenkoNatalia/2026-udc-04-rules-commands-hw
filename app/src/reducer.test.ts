@@ -53,7 +53,7 @@ describe("reducer", () => {
     expect(next.filter).toBe("done");
   });
 
-  it("returns the same state for an unknown id toggle", () => {
+  it("leaves the task unchanged for an unknown id toggle", () => {
     const state: AppState = {
       tasks: [{ id: "a", title: "A", done: false, priority: "normal" }],
       filter: "all",

@@ -1,6 +1,6 @@
 ---
 description: "Named exports, no any/@ts-ignore, immutable updates, import style, kebab-case files"
-globs: "app/**/*.ts"
+globs: "app/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
