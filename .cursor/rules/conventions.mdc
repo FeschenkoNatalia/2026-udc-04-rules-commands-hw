@@ -45,4 +45,8 @@ consistent set of conventions across every file — see
    matches.
 4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
    leaks, unguarded indexed access, and bad import resolution).
-5. New filenames under `app/src` match `^[a-z0-9-]+\.(ts|tsx)$`.
+5. `find app/src -type f \( -name "*.ts" -o -name "*.tsx" \) -exec basename {} \;
+   | grep -vE '^[a-z0-9-]+(\.test)?\.(ts|tsx)$' && exit 1 || true` — prints every
+   filename under `app/src` that breaks the kebab-case pattern
+   (`^[a-z0-9-]+(\.test)?\.(ts|tsx)$`) and exits non-zero if it finds one; no output
+   and exit 0 means every filename is clean.
