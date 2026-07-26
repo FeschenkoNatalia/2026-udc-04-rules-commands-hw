@@ -45,4 +45,4 @@ consistent set of conventions across every file — see
    matches.
 4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
    leaks, unguarded indexed access, and bad import resolution).
-5. New filenames under `app/src` match `^[a-z0-9-]+\.ts$`.
+5. New filenames under `app/src` match `^[a-z0-9-]+\.(ts|tsx)$`.
