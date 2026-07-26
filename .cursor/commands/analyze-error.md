@@ -2,6 +2,8 @@
 description: "Diagnose a build/test error and propose a fix without @ts-ignore/any or protected-file edits"
 ---
 
+# Diagnose a build/test error
+
 Diagnose this error and propose a fix:
 
 $ARGUMENTS

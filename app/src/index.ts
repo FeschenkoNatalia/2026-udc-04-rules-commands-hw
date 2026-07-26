@@ -11,13 +11,16 @@ import {
   currentFilter,
 } from "./selectors.js";
 import { slugify } from "./lib/text.js";
+import type { AppState } from "./types.js";
+
+export function formatStatus(state: AppState): string {
+  return `tasks: ${taskCount(state)}, remaining: ${remainingCount(state)}, filter: ${currentFilter(state)}`;
+}
 
 const store = createStore();
 
 store.subscribe((state) => {
-  console.log(
-    `tasks: ${taskCount(state)}, remaining: ${remainingCount(state)}, filter: ${currentFilter(state)}`,
-  );
+  console.log(formatStatus(state));
 });
 
 const buyMilk = slugify("Buy Milk");

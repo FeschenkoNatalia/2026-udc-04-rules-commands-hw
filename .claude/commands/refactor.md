@@ -2,6 +2,8 @@
 description: "Refactor selected code to match project conventions without changing behavior or touching protected files"
 ---
 
+# Refactor
+
 Refactor: $ARGUMENTS
 
 1. Preserve behavior exactly — no observable change in inputs/outputs. If you

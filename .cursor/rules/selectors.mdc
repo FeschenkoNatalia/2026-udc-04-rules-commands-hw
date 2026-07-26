@@ -8,8 +8,9 @@ alwaysApply: false
 
 ## Context
 
-`app/src/selectors.ts` (`visibleTasks`, `remainingCount`) is the sanctioned
-way to derive data from `AppState` — see `app/src/index.ts` for the pattern.
+`app/src/selectors.ts` (`visibleTasks`, `remainingCount`, `taskCount`,
+`currentFilter`) is the sanctioned way to derive data from `AppState` — see
+`app/src/index.ts` for the pattern.
 
 ## Rule
 

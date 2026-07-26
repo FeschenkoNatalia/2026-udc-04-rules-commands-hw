@@ -35,9 +35,11 @@ consistent set of conventions across every file — see
 ## How to verify
 
 1. `grep -rn "export default" app/src` returns no matches.
-2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts
-   --include=*.tsx` returns no matches outside comment lines (skip `//`-only
-   lines by eye — grep can't filter those reliably); test files
+2. `grep -rnE "\bany\b|@ts-ignore|@ts-expect-error" app/src --include=*.ts
+   --include=*.tsx | grep -vE ':[0-9]+:\s*//'` — the second `grep` strips out
+   comment-only lines automatically (a matched line whose content, after the
+   `file:line:` prefix, starts with `//`), so the check is a deterministic
+   pass/fail instead of eyeballing it; returns no matches. Test files
    (`*.test.ts`/`*.spec.ts` and their `.tsx` counterparts) are included, not
    exempt from this rule.
 3. `grep -rnoE "(from|import)\s+['\"]\.\.?/[^'\"]*['\"]" app/src

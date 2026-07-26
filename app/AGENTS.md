@@ -21,8 +21,9 @@ TypeScript task board built around a hand-rolled state store.
   is implemented.
 - `src/actions.ts` — action creators (`addTask`, `toggleTask`, `removeTask`,
   `clearTasks`, `setTaskPriority`, `setFilter`), one per `Action` variant.
-- `src/selectors.ts` — read helpers (`visibleTasks`, `remainingCount`).
-  Consumers derive data through here, not by reading `state.tasks` directly.
+- `src/selectors.ts` — read helpers (`visibleTasks`, `remainingCount`,
+  `taskCount`, `currentFilter`). Consumers derive data through here, not by
+  reading `state.tasks` directly.
 - `src/lib/text.ts` — in-house text helpers with a small, fixed API:
   `slugify`, `truncate`, `normalizeSpaces`. Nothing else is exported.
 - `src/index.ts` — small demo wiring the store/actions/selectors together.

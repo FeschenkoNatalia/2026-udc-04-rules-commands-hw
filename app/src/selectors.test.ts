@@ -11,21 +11,25 @@ describe("taskCount", () => {
       ],
       filter: "all",
     };
-    expect(taskCount(state)).toBe(2);
+    const count = taskCount(state);
+    expect(count).toBe(2);
   });
 
   it("returns 0 for an empty task list", () => {
-    expect(taskCount(initialState)).toBe(0);
+    const count = taskCount(initialState);
+    expect(count).toBe(0);
   });
 });
 
 describe("currentFilter", () => {
   it("returns the state's filter", () => {
     const state: AppState = { tasks: [], filter: "done" };
-    expect(currentFilter(state)).toBe("done");
+    const filter = currentFilter(state);
+    expect(filter).toBe("done");
   });
 
   it("reflects the default filter on initial state", () => {
-    expect(currentFilter(initialState)).toBe("all");
+    const filter = currentFilter(initialState);
+    expect(filter).toBe("all");
   });
 });
