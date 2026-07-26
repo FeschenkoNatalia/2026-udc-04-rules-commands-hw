@@ -34,9 +34,12 @@ only these three functions — nothing more:
 1. `grep -n "^export function" app/src/lib/text.ts` lists exactly
    `slugify`, `truncate`, `normalizeSpaces`, plus any explicitly-added new
    functions — nothing imported from elsewhere claiming those names.
-2. `grep -rn "capitalize\|camelCase\|deburr\|kebabCase" app/src` returns no
-   matches unless one was just added as a real, tested function in `text.ts`.
-3. `grep -rniE "lodash|underscore" app/package.json app/src` returns no
+2. `grep -rn "capitalize(\|camelCase(\|deburr(\|kebabCase(" app/src` (call
+   syntax, so it doesn't flag the doc comment naming these as unsupported)
+   returns no matches unless one was just added as a real, tested function
+   in `text.ts`.
+3. `grep -rniE '"(lodash|underscore)"\s*:' app/package.json` and
+   `grep -rniE "from ['\"](lodash|underscore)['\"]" app/src` both return no
    matches.
 4. `grep -n "maxLength: number, suffix = " app/src/lib/text.ts` still shows
    the original default (`suffix = "…"`) unless the task explicitly asked to

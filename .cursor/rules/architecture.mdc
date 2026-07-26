@@ -33,8 +33,10 @@ See `materials/architecture-brief.md`.
 
 ## How to verify
 
-1. `grep -rniE "redux|zustand|mobx|jotai" app/src app/package.json` returns no
-   matches.
+1. `grep -rniE '"(redux|zustand|mobx|jotai)"\s*:' app/package.json` and
+   `grep -rniE "from ['\"](redux|zustand|mobx|jotai)['\"]" app/src` both
+   return no matches (a bare mention in a comment, like the one explaining
+   this constraint in `store.ts`, doesn't count).
 2. Every new action variant appears in all three of `types.ts` (`Action`
    union), `reducer.ts` (a `case` arm), and `actions.ts` (a creator function)
    — same count of variants as creators.

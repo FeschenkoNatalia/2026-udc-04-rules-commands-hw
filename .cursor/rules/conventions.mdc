@@ -35,10 +35,14 @@ consistent set of conventions across every file — see
 ## How to verify
 
 1. `grep -rn "export default" app/src` returns no matches.
-2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts --include=*.tsx` returns
-   no matches in non-test, non-comment code.
-3. `grep -rn "from \"\./[^\"]*[^s]\"" app/src --include=*.ts --include=*.tsx` (relative import
-   NOT ending in `.js`) returns no matches.
+2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts
+   --include=*.tsx --exclude=*.test.ts --exclude=*.test.tsx` returns no
+   matches outside comment lines (skip `//`-only lines by eye — grep can't
+   filter those reliably).
+3. `grep -rnE "(from|import)\s+['\"]\.\.?/[^'\"]*[^s]['\"]" app/src
+   --include=*.ts --include=*.tsx` (relative import via `from`/`import`,
+   either quote style, `./` or `../`, NOT ending in `.js`) returns no
+   matches.
 4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
    leaks, unguarded indexed access, and bad import resolution).
 5. New filenames under `app/src` match `^[a-z0-9-]+\.ts$`.

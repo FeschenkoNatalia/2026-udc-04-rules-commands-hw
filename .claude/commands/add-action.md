@@ -10,7 +10,7 @@ Add a new `Action` variant for: $ARGUMENTS
    state object (immutable — spread/`map`/`filter`, never mutate in place).
 3. Add a matching creator in `app/src/actions.ts`, named like the existing
    ones (`addTask`, `toggleTask`, `removeTask`, `setFilter`), with a `type`
-   string of `"<domain>/<verb in past tense>"`.
+   string of `"<domain>/<lowercase verb>"`.
 4. Add colocated tests: a happy-path + edge-case test for the new creator in
    `app/src/actions.test.ts`, and a happy-path + edge-case test for the
    reducer case in `app/src/reducer.test.ts`.
