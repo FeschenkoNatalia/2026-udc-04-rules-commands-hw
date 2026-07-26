@@ -43,7 +43,7 @@ describe("reducer", () => {
     expect(cleared.tasks).toEqual([]);
   });
 
-  it("clearing an already-empty task list is a no-op", () => {
+  it("keeps an empty task list empty", () => {
     const cleared = reducer(initialState, clearTasks());
     expect(cleared.tasks).toEqual([]);
   });

@@ -1,6 +1,6 @@
 ---
 description: "Every Action variant gets a matching action creator in app/src/actions.ts, following existing naming"
-globs: "app/src/actions.ts,app/src/types.ts,app/src/reducer.ts"
+globs: "app/src/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
@@ -32,7 +32,7 @@ the sanctioned way to build `Action` objects.
 1. The number of `type:` variants in the `Action` union
    (`app/src/types.ts`) equals the number of exported creator functions in
    `app/src/actions.ts`.
-2. `grep -n "type: \"" app/src/**/*.ts` outside of `types.ts`/`actions.ts`/
+2. `grep -rn "type: \"" app/src --include='*.ts'` outside of `types.ts`/`actions.ts`/
    `reducer.ts`/`*.test.ts` returns no matches — nothing builds raw action
    objects by hand elsewhere.
 3. New `type` strings match `^[a-z]+\/[a-z]+$` and read as past tense

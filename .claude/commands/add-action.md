@@ -11,8 +11,9 @@ Add a new `Action` variant for: $ARGUMENTS
 3. Add a matching creator in `app/src/actions.ts`, named like the existing
    ones (`addTask`, `toggleTask`, `removeTask`, `setFilter`), with a `type`
    string of `"<domain>/<verb in past tense>"`.
-4. Add a colocated test (happy path + one edge case) matching the style in
-   `app/src/reducer.test.ts`.
+4. Add colocated tests: a happy-path + edge-case test for the new creator in
+   `app/src/actions.test.ts`, and a happy-path + edge-case test for the
+   reducer case in `app/src/reducer.test.ts`.
 5. Run `cd app && npm test && npm run typecheck` — both must pass.
 
 Follow `.cursor/rules/` — especially `architecture.mdc`, `action-creators.mdc`,

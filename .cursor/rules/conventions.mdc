@@ -35,9 +35,9 @@ consistent set of conventions across every file — see
 ## How to verify
 
 1. `grep -rn "export default" app/src` returns no matches.
-2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts` returns
+2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts --include=*.tsx` returns
    no matches in non-test, non-comment code.
-3. `grep -rn "from \"\./[^\"]*[^s]\"" app/src --include=*.ts` (relative import
+3. `grep -rn "from \"\./[^\"]*[^s]\"" app/src --include=*.ts --include=*.tsx` (relative import
    NOT ending in `.js`) returns no matches.
 4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
    leaks, unguarded indexed access, and bad import resolution).
