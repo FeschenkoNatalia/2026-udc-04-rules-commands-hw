@@ -2,6 +2,8 @@
 description: "Add a new Action variant end-to-end: types.ts -> reducer.ts -> actions.ts -> test"
 ---
 
+# Add a new Action variant
+
 Add a new `Action` variant for: $ARGUMENTS
 
 1. Add the variant to the `Action` discriminated union in `app/src/types.ts`

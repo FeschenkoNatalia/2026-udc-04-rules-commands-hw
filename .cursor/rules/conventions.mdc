@@ -39,14 +39,13 @@ consistent set of conventions across every file — see
    --include=*.tsx --exclude=*.test.ts --exclude=*.test.tsx` returns no
    matches outside comment lines (skip `//`-only lines by eye — grep can't
    filter those reliably).
-3. `grep -rnE "(from|import)\s+['\"]\.\.?/[^'\"]*[^s]['\"]" app/src
-   --include=*.ts --include=*.tsx` (relative import via `from`/`import`,
-   either quote style, `./` or `../`, NOT ending in `.js`) returns no
-   matches.
+3. `grep -rnoE "(from|import)\s+['\"]\.\.?/[^'\"]*['\"]" app/src
+   --include=*.ts --include=*.tsx | grep -vE "\.js['\"]$"` (every relative
+   import via `from`/`import`, either quote style, `./` or `../`, filtered
+   down to those NOT ending in `.js`) returns no matches.
 4. `cd app && npm run typecheck` passes (strict mode catches unintended `any`
    leaks, unguarded indexed access, and bad import resolution).
 5. `find app/src -type f \( -name "*.ts" -o -name "*.tsx" \) -exec basename {} \;
-   | grep -vE '^[a-z0-9-]+(\.test)?\.(ts|tsx)$' && exit 1 || true` — prints every
-   filename under `app/src` that breaks the kebab-case pattern
-   (`^[a-z0-9-]+(\.test)?\.(ts|tsx)$`) and exits non-zero if it finds one; no output
-   and exit 0 means every filename is clean.
+   | grep -vE '^[a-z0-9-]+(\.(test|spec))?\.(ts|tsx)$'` returns no matches —
+   every filename under `app/src` follows the kebab-case pattern
+   (`^[a-z0-9-]+(\.(test|spec))?\.(ts|tsx)$`); any printed line is a violation.

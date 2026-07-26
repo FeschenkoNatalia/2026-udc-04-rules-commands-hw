@@ -36,7 +36,7 @@ existing style.
 ## How to verify
 
 1. `cd app && npm test` is green.
-2. Every new/changed `.ts` file under `app/src` (excluding `types.ts`,
+2. Every new/changed `.ts`/`.tsx` file under `app/src` (excluding `types.ts`,
    `store.ts`) has a colocated `*.test.ts` covering it.
 3. `grep -rn "from \"vitest\"" app/src` — new test files import from
    `vitest`, not `jest`/`mocha`/`chai`.

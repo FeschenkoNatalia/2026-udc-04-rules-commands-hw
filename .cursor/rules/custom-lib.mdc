@@ -39,8 +39,10 @@ only these three functions — nothing more:
    returns no matches unless one was just added as a real, tested function
    in `text.ts`.
 3. `grep -rniE '"(lodash|underscore)"\s*:' app/package.json` and
-   `grep -rniE "from ['\"](lodash|underscore)['\"]" app/src` both return no
-   matches.
+   `grep -rnE "^\s*(import|export).*from\s+['\"](lodash|underscore)['\"]" app/src`
+   both return no matches (the second check is anchored to actual
+   `import`/`export` statements, so a bare mention in a comment doesn't
+   count).
 4. `grep -n "maxLength: number, suffix = " app/src/lib/text.ts` still shows
    the original default (`suffix = "…"`) unless the task explicitly asked to
    change it.

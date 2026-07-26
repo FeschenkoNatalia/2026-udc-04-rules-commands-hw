@@ -34,7 +34,7 @@ top of them.
    additions (new union members / new fields), not a renamed or
    removed existing export.
 3. No new file duplicates `dispatch`/`subscribe`/`getState`-shaped logic
-   (`grep -rn "function createStore\|getState()\s*{" app/src` should only
-   match `store.ts`).
+   (`grep -rnE "(function|const|let)\s+createStore|getState\s*\(\)\s*\{|getState\s*:\s*\(\)\s*=>" app/src`
+   should only match `store.ts`).
 4. `cd app && npm test` still passes after the change (protected-core
    breakage tends to cascade into test failures across multiple files).

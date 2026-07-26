@@ -29,22 +29,30 @@ describe("reducer", () => {
   });
 
   it("toggles a task's done flag", () => {
-    const toggled = reducer(stateWithTaskA(), toggleTask("a"));
+    const state = stateWithTaskA();
+    const action = toggleTask("a");
+    const toggled = reducer(state, action);
     expect(toggled.tasks[0]?.done).toBe(true);
   });
 
   it("removes a task by id", () => {
-    const removed = reducer(stateWithTaskA(), removeTask("a"));
+    const state = stateWithTaskA();
+    const action = removeTask("a");
+    const removed = reducer(state, action);
     expect(removed.tasks).toEqual([]);
   });
 
   it("clears all tasks", () => {
-    const cleared = reducer(stateWithTaskA(), clearTasks());
+    const state = stateWithTaskA();
+    const action = clearTasks();
+    const cleared = reducer(state, action);
     expect(cleared.tasks).toEqual([]);
   });
 
   it("keeps an empty task list empty", () => {
-    const cleared = reducer(initialState, clearTasks());
+    const state = initialState;
+    const action = clearTasks();
+    const cleared = reducer(state, action);
     expect(cleared.tasks).toEqual([]);
   });
 
@@ -63,7 +71,9 @@ describe("reducer", () => {
   });
 
   it("changes a task's priority", () => {
-    const changed = reducer(stateWithTaskA(), setTaskPriority("a", "high"));
+    const state = stateWithTaskA();
+    const action = setTaskPriority("a", "high");
+    const changed = reducer(state, action);
     expect(changed.tasks[0]?.priority).toBe("high");
   });
 

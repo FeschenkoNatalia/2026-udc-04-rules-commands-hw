@@ -1,6 +1,6 @@
 ---
 description: "Reads go through app/src/selectors.ts, not raw state field access"
-globs: "app/src/selectors.ts,app/src/**/*.ts"
+globs: "app/src/selectors.ts,app/src/**/*.{ts,tsx}"
 alwaysApply: false
 ---
 
