@@ -33,8 +33,8 @@ See `materials/architecture-brief.md`.
 
 ## How to verify
 
-1. `grep -rniE '"(redux|zustand|mobx|jotai)"\s*:' app/package.json` and
-   `grep -rnE "^\s*import\s+['\"](redux|zustand|mobx|jotai)['\"]|^\s*(import|export).*from\s+['\"](redux|zustand|mobx|jotai)['\"]" app/src`
+1. `grep -rniE '"(redux|zustand|mobx|jotai)"[[:space:]]*:' app/package.json` and
+   `grep -rnE "^[[:space:]]*import[[:space:]]+['\"](redux|zustand|mobx|jotai)['\"]|^[[:space:]]*(import|export).*from[[:space:]]+['\"](redux|zustand|mobx|jotai)['\"]" app/src`
    both return no matches (the second check catches both side-effect imports,
    e.g. `import \"redux\"`, and `from`-form imports/re-exports, anchored to
    actual `import`/`export` statements — so a bare mention in a comment, like
@@ -42,9 +42,15 @@ See `materials/architecture-brief.md`.
 2. Every new action variant appears in all three of `types.ts` (`Action`
    union), `reducer.ts` (a `case` arm), and `actions.ts` (a creator function)
    — same count of variants as creators.
-3. `grep -rnE "getState\(\)\.[a-zA-Z]+\s*=|getState\(\)\.[a-zA-Z]+\.(push|splice|pop|shift|unshift|sort|reverse)\(" app/src`
+3. `grep -rnE "getState\(\)(\.[a-zA-Z]+|\[[^]]+\])+\s*=|getState\(\)(\.[a-zA-Z]+|\[[^]]+\])*\.(push|splice|pop|shift|unshift|sort|reverse)\(" app/src`
    returns no matches — that pattern is direct mutation of live state instead
-   of going through `dispatch`. (Reading `getState().tasks` is fine; assigning
-   to it or calling a mutating array method on it is not.)
+   of going through `dispatch`, including nested writes chained straight off
+   `getState()` (e.g. `getState().tasks[0].done = true`). (Reading
+   `getState().tasks` is fine; assigning to it or calling a mutating array
+   method on it is not.) This only catches mutations written directly on the
+   `getState()` expression — an aliased mutation split across statements
+   (`const state = store.getState(); state.tasks.push(...)`) isn't caught;
+   review those by eye, the same limitation `selectors.mdc` notes for
+   destructured aliases.
 4. `cd app && npm test` passes, including the existing immutability
    assertion in `reducer.test.ts` ("does not mutate the previous state").
