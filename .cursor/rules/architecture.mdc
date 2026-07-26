@@ -34,10 +34,11 @@ See `materials/architecture-brief.md`.
 ## How to verify
 
 1. `grep -rniE '"(redux|zustand|mobx|jotai)"\s*:' app/package.json` and
-   `grep -rnE "^\s*(import|export).*from\s+['\"](redux|zustand|mobx|jotai)['\"]" app/src`
-   both return no matches (the second check is anchored to actual
-   `import`/`export` statements, so a bare mention in a comment, like the one
-   explaining this constraint in `store.ts`, doesn't count).
+   `grep -rnE "^\s*import\s+['\"](redux|zustand|mobx|jotai)['\"]|^\s*(import|export).*from\s+['\"](redux|zustand|mobx|jotai)['\"]" app/src`
+   both return no matches (the second check catches both side-effect imports,
+   e.g. `import \"redux\"`, and `from`-form imports/re-exports, anchored to
+   actual `import`/`export` statements — so a bare mention in a comment, like
+   the one explaining this constraint in `store.ts`, doesn't count).
 2. Every new action variant appears in all three of `types.ts` (`Action`
    union), `reducer.ts` (a `case` arm), and `actions.ts` (a creator function)
    — same count of variants as creators.

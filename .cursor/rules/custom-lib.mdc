@@ -8,8 +8,9 @@ alwaysApply: false
 
 ## Context
 
-`app/src/lib/text.ts` is an in-house text-helper lib, not lodash. It exports
-only these three functions — nothing more:
+`app/src/lib/text.ts` is an in-house text-helper lib, not lodash. Its current
+exports are exactly these three functions (new ones may be added as a
+separate named export with a colocated test — see Rule below):
 
 - `slugify(input: string): string`
 - `truncate(input: string, maxLength: number, suffix?: string): string`

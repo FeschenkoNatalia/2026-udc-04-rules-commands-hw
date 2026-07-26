@@ -38,7 +38,9 @@ existing style.
 1. `cd app && npm test` is green.
 2. Every new/changed `.ts`/`.tsx` file under `app/src` (excluding `types.ts`,
    `store.ts`) has a colocated `*.test.ts` covering it.
-3. `grep -rn "from \"vitest\"" app/src` — new test files import from
-   `vitest`, not `jest`/`mocha`/`chai`.
+3. `grep -rnE "from ['\"]vitest['\"]" app/src` finds the vitest imports
+   (either quote style), and `grep -rnE "from ['\"](jest|mocha|chai)['\"]"
+   app/src` returns no matches — new test files import from `vitest`, never
+   `jest`/`mocha`/`chai`.
 4. `grep -rn "toMatchSnapshot" app/src` returns no matches.
 5. Each new `it(...)` block name does not start with "should".

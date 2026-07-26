@@ -36,9 +36,10 @@ consistent set of conventions across every file — see
 
 1. `grep -rn "export default" app/src` returns no matches.
 2. `grep -rn "\bany\b\|@ts-ignore\|@ts-expect-error" app/src --include=*.ts
-   --include=*.tsx --exclude=*.test.ts --exclude=*.test.tsx` returns no
-   matches outside comment lines (skip `//`-only lines by eye — grep can't
-   filter those reliably).
+   --include=*.tsx` returns no matches outside comment lines (skip `//`-only
+   lines by eye — grep can't filter those reliably); test files
+   (`*.test.ts`/`*.spec.ts` and their `.tsx` counterparts) are included, not
+   exempt from this rule.
 3. `grep -rnoE "(from|import)\s+['\"]\.\.?/[^'\"]*['\"]" app/src
    --include=*.ts --include=*.tsx | grep -vE "\.js['\"]$"` (every relative
    import via `from`/`import`, either quote style, `./` or `../`, filtered
