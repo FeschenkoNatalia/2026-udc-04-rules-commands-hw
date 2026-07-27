@@ -34,24 +34,26 @@ See `materials/architecture-brief.md`.
 ## How to verify
 
 1. `grep -rniE '"(redux|zustand|mobx|jotai)"[[:space:]]*:' app/package.json` and
-   `grep -rnE "^[[:space:]]*(import|export)([[:space:]]+[^;]*from)?[[:space:]]+['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"]|(^|[^.[:alnum:]_])(require|import)\([[:space:]]*['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"][[:space:]]*\)" app/src --include='*.ts' --include='*.tsx' | grep -vE "^[^:]+:[0-9]+:[[:space:]]*//"`
+   `grep -rnE "^[[:space:]]*(import|export)([[:space:]]+[^;]*from)?[[:space:]]+['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"]|(^[[:space:]]*|[=(,:;\[][[:space:]]*|=>[[:space:]]*|(return|await)[[:space:]]+)(require|import)\([[:space:]]*['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"][[:space:]]*\)" app/src --include='*.ts' --include='*.tsx' | grep -vE "^[^:]+:[0-9]+:[[:space:]]*//"`
    both return no matches (the second check catches side-effect imports, e.g.
    `import \"redux\"`, `from`-form imports/re-exports, `require(\"redux\")`,
    dynamic `import(\"redux\")`, and subpath specifiers like `zustand/vanilla`
-   or `jotai/utils` — anchored to actual import/export/require/dynamic-import
-   statements, with full-line comments filtered out, so a bare mention in a
-   comment, like the one explaining this constraint in `store.ts`, doesn't
-   count).
+   or `jotai/utils` — the require/dynamic-import branch is anchored to actual
+   call sites, syntactically preceded by line start, `=`, `(`, `[`, `,`, `:`,
+   `;`, `=>`, `return`, or `await`, so a mention inside a comment or string
+   literal, like `'не використовуйте import("redux")'`, doesn't count).
 2. Every new action `type` string appears in all three of `types.ts`,
    `reducer.ts`, and `actions.ts`:
    ```bash
-   diff <(grep -oE '"[a-z]+/[a-z]+"' app/src/types.ts | sort -u) \
-        <(grep -oE 'case "[a-z]+/[a-z]+"' app/src/reducer.ts | grep -oE '"[a-z]+/[a-z]+"' | sort -u)
-   diff <(grep -oE '"[a-z]+/[a-z]+"' app/src/types.ts | sort -u) \
-        <(grep -oE '"[a-z]+/[a-z]+"' app/src/actions.ts | sort -u)
+   diff <(grep -oE "['\"][a-z]+/[a-z]+['\"]" app/src/types.ts | tr -d "'\"" | sort -u) \
+        <(grep -oE "case ['\"][a-z]+/[a-z]+['\"]" app/src/reducer.ts | grep -oE "['\"][a-z]+/[a-z]+['\"]" | tr -d "'\"" | sort -u)
+   diff <(grep -oE "['\"][a-z]+/[a-z]+['\"]" app/src/types.ts | tr -d "'\"" | sort -u) \
+        <(grep -oE "['\"][a-z]+/[a-z]+['\"]" app/src/actions.ts | tr -d "'\"" | sort -u)
    ```
    Both `diff`s must produce no output — any output means the `Action` union,
-   reducer `case` arms, and creators in `actions.ts` have fallen out of sync.
+   reducer `case` arms, and creators in `actions.ts` have fallen out of sync
+   (quote-insensitive, so a variant written with `'single quotes'` is still
+   caught).
 3. `grep -rnE "getState\(\)(\.[a-zA-Z]+|\[[^]]+\])+\s*=|getState\(\)(\.[a-zA-Z]+|\[[^]]+\])*\.(push|splice|pop|shift|unshift|sort|reverse)\(" app/src`
    returns no matches — that pattern is direct mutation of live state instead
    of going through `dispatch`, including nested writes chained straight off

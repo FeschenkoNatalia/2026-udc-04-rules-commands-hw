@@ -30,9 +30,16 @@ the sanctioned way to build `Action` objects.
 
 ## How to verify
 
-1. The number of `type:` variants in the `Action` union
-   (`app/src/types.ts`) equals the number of exported creator functions in
-   `app/src/actions.ts`.
+1. Set equality between the `type` strings in the `Action` union
+   (`app/src/types.ts`) and the `type` strings returned by creators in
+   `app/src/actions.ts` — matching counts alone would miss a duplicated
+   creator masking a missing one:
+   ```bash
+   diff <(grep -oE "['\"][a-z]+/[a-z]+['\"]" app/src/types.ts | tr -d "'\"" | sort -u) \
+        <(grep -oE "['\"][a-z]+/[a-z]+['\"]" app/src/actions.ts | tr -d "'\"" | sort -u)
+   ```
+   No output means every `Action` variant has exactly one creator and there
+   are no stray or duplicate `type` strings, whether quoted with `'` or `"`.
 2. `grep -rnE "type[[:space:]]*:[[:space:]]*['\"]" app/src --include='*.ts'
    --include='*.tsx' --exclude='types.ts' --exclude='actions.ts'
    --exclude='reducer.ts' --exclude='*.test.ts' --exclude='*.test.tsx'
