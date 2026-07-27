@@ -9,8 +9,10 @@ Refactor: $ARGUMENTS
 1. Preserve behavior exactly — no observable change in inputs/outputs. If you
    can't refactor without changing behavior, stop and say so instead of
    guessing.
-2. Do not touch `app/src/store.ts` or `app/src/types.ts` unless explicitly
-   named in the target above (see `.cursor/rules/do-not-touch.mdc`).
+2. Do not touch `app/src/store.ts`. Only touch `app/src/types.ts` for
+   explicitly requested additive changes (new `Action` variants or fields) —
+   never rename or remove existing exports (see
+   `.cursor/rules/do-not-touch.mdc`).
 3. Match `.cursor/rules/conventions.mdc`: named exports only, no
    `any`/`@ts-ignore`, immutable updates, kebab-case filenames, `.js`-
    extension relative imports, `import type` for type-only imports.

@@ -34,14 +34,24 @@ See `materials/architecture-brief.md`.
 ## How to verify
 
 1. `grep -rniE '"(redux|zustand|mobx|jotai)"[[:space:]]*:' app/package.json` and
-   `grep -rnE "^[[:space:]]*import[[:space:]]+['\"](redux|zustand|mobx|jotai)['\"]|^[[:space:]]*(import|export).*from[[:space:]]+['\"](redux|zustand|mobx|jotai)['\"]" app/src`
-   both return no matches (the second check catches both side-effect imports,
-   e.g. `import \"redux\"`, and `from`-form imports/re-exports, anchored to
-   actual `import`/`export` statements — so a bare mention in a comment, like
-   the one explaining this constraint in `store.ts`, doesn't count).
-2. Every new action variant appears in all three of `types.ts` (`Action`
-   union), `reducer.ts` (a `case` arm), and `actions.ts` (a creator function)
-   — same count of variants as creators.
+   `grep -rnE "^[[:space:]]*(import|export)([[:space:]]+[^;]*from)?[[:space:]]+['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"]|(^|[^.[:alnum:]_])(require|import)\([[:space:]]*['\"](redux|zustand|mobx|jotai)(/[^'\"]*)?['\"][[:space:]]*\)" app/src --include='*.ts' --include='*.tsx' | grep -vE "^[^:]+:[0-9]+:[[:space:]]*//"`
+   both return no matches (the second check catches side-effect imports, e.g.
+   `import \"redux\"`, `from`-form imports/re-exports, `require(\"redux\")`,
+   dynamic `import(\"redux\")`, and subpath specifiers like `zustand/vanilla`
+   or `jotai/utils` — anchored to actual import/export/require/dynamic-import
+   statements, with full-line comments filtered out, so a bare mention in a
+   comment, like the one explaining this constraint in `store.ts`, doesn't
+   count).
+2. Every new action `type` string appears in all three of `types.ts`,
+   `reducer.ts`, and `actions.ts`:
+   ```bash
+   diff <(grep -oE '"[a-z]+/[a-z]+"' app/src/types.ts | sort -u) \
+        <(grep -oE 'case "[a-z]+/[a-z]+"' app/src/reducer.ts | grep -oE '"[a-z]+/[a-z]+"' | sort -u)
+   diff <(grep -oE '"[a-z]+/[a-z]+"' app/src/types.ts | sort -u) \
+        <(grep -oE '"[a-z]+/[a-z]+"' app/src/actions.ts | sort -u)
+   ```
+   Both `diff`s must produce no output — any output means the `Action` union,
+   reducer `case` arms, and creators in `actions.ts` have fallen out of sync.
 3. `grep -rnE "getState\(\)(\.[a-zA-Z]+|\[[^]]+\])+\s*=|getState\(\)(\.[a-zA-Z]+|\[[^]]+\])*\.(push|splice|pop|shift|unshift|sort|reverse)\(" app/src`
    returns no matches — that pattern is direct mutation of live state instead
    of going through `dispatch`, including nested writes chained straight off

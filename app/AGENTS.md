@@ -27,7 +27,9 @@ TypeScript task board built around a hand-rolled state store.
 - `src/lib/text.ts` — in-house text helpers with a small, fixed API:
   `slugify`, `truncate`, `normalizeSpaces`. Nothing else is exported.
 - `src/index.ts` — small demo wiring the store/actions/selectors together.
-- `src/*.test.ts`, `src/lib/*.test.ts` — colocated vitest tests.
+- `*.test.{ts,tsx}`/`*.spec.{ts,tsx}` colocated next to each non-test
+  source file, at any depth under `src/` (e.g. `src/*.test.ts`,
+  `src/lib/*.test.ts`) — every non-test TypeScript/TSX source file needs one.
 
 ## Commands
 
